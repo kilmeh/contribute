@@ -1,0 +1,224 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Replace YOUR-PROJECT-REF with the Supabase project ref (see supabase/README.md). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://YOUR-PROJECT-REF.supabase.co; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Help build Kilmeh, an open benchmark for AI coding assistants in Arabic, by writing how you spell 10 words.">
+  <title>Kilmeh: contribute words</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand"><span class="brand-ar" lang="ar" dir="rtl">كلمة</span><span class="brand-en" lang="en" dir="ltr">Kilmeh</span></span>
+    <div class="lang-toggle" role="group" data-i18n-aria-label="lang_toggle_label" aria-label="Language">
+      <button type="button" data-lang-choice="en" aria-pressed="true" lang="en">EN</button>
+      <button type="button" data-lang-choice="ar" aria-pressed="false" lang="en">AR</button>
+    </div>
+  </header>
+
+  <p id="mock-banner" class="banner" role="status" hidden data-i18n="mock_banner">Test mode: nothing is sent to a server.</p>
+
+  <main id="main">
+    <section id="screen-loading" class="screen">
+      <p data-i18n="loading">Loading...</p>
+      <noscript><p>This page needs JavaScript to work.</p></noscript>
+    </section>
+
+    <section id="screen-error" class="screen" hidden>
+      <p class="error-box" role="alert" data-i18n="load_error">The page could not load.</p>
+    </section>
+
+    <!-- (a) Intro -->
+    <section id="screen-intro" class="screen" hidden aria-labelledby="intro-heading">
+      <h1 id="intro-heading" data-i18n="intro_heading">Help AI understand how you write</h1>
+      <details class="how" id="how">
+        <summary data-i18n="how_it_works">How it works</summary>
+        <p data-i18n="intro_body"></p>
+      </details>
+
+      <form id="intro-form" novalidate autocomplete="on">
+        <div class="field">
+          <label for="f-name" data-i18n="label_name">Your name (optional)</label>
+          <input id="f-name" name="name" type="text" dir="auto" maxlength="100" autocomplete="name" aria-describedby="f-identity-help f-name-error">
+          <p class="error" id="f-name-error"></p>
+        </div>
+        <div class="field">
+          <label for="f-email" data-i18n="label_email">Your email (optional)</label>
+          <input id="f-email" name="email" type="email" dir="ltr" maxlength="254" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" aria-describedby="f-identity-help f-email-error">
+          <p class="error" id="f-email-error"></p>
+        </div>
+        <p class="help" id="f-identity-help" data-i18n="help_optional_identity"></p>
+
+        <div class="field check">
+          <input id="f-credit" name="credit" type="checkbox" disabled aria-describedby="f-credit-help">
+          <label for="f-credit" data-i18n="label_credit">Credit me by name</label>
+          <p class="help" id="f-credit-help" data-i18n="help_credit"></p>
+        </div>
+
+        <div class="field">
+          <label for="f-country" data-i18n="label_country">Which country's Arabic do you speak?</label>
+          <p class="help" id="f-country-help" data-i18n="help_country"></p>
+          <select id="f-country" name="country" required aria-describedby="f-country-help f-country-error">
+            <option value="" disabled selected data-i18n="country_placeholder">Choose a country</option>
+            <option value="DZ" data-i18n="country_DZ">Algeria</option>
+            <option value="BH" data-i18n="country_BH">Bahrain</option>
+            <option value="KM" data-i18n="country_KM">Comoros</option>
+            <option value="DJ" data-i18n="country_DJ">Djibouti</option>
+            <option value="EG" data-i18n="country_EG">Egypt</option>
+            <option value="IQ" data-i18n="country_IQ">Iraq</option>
+            <option value="JO" data-i18n="country_JO">Jordan</option>
+            <option value="KW" data-i18n="country_KW">Kuwait</option>
+            <option value="LB" data-i18n="country_LB">Lebanon</option>
+            <option value="LY" data-i18n="country_LY">Libya</option>
+            <option value="MR" data-i18n="country_MR">Mauritania</option>
+            <option value="MA" data-i18n="country_MA">Morocco</option>
+            <option value="OM" data-i18n="country_OM">Oman</option>
+            <option value="PS" data-i18n="country_PS">Palestine</option>
+            <option value="QA" data-i18n="country_QA">Qatar</option>
+            <option value="SA" data-i18n="country_SA">Saudi Arabia</option>
+            <option value="SO" data-i18n="country_SO">Somalia</option>
+            <option value="SD" data-i18n="country_SD">Sudan</option>
+            <option value="SY" data-i18n="country_SY">Syria</option>
+            <option value="TN" data-i18n="country_TN">Tunisia</option>
+            <option value="AE" data-i18n="country_AE">United Arab Emirates</option>
+            <option value="YE" data-i18n="country_YE">Yemen</option>
+            <option value="other" data-i18n="country_other">Other</option>
+          </select>
+          <p class="error" id="f-country-error"></p>
+        </div>
+        <div class="field" id="f-country-other-wrap" hidden>
+          <label for="f-country-other" data-i18n="label_country_other">Which country or dialect?</label>
+          <input id="f-country-other" name="countryOther" type="text" dir="auto" maxlength="100" aria-describedby="f-country-other-error">
+          <p class="error" id="f-country-other-error"></p>
+        </div>
+
+        <!-- Honeypot: hidden from people and assistive tech; bots tend to fill it. -->
+        <div class="hp" aria-hidden="true">
+          <label for="f-website">Website</label>
+          <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="field check">
+          <input id="f-consent" name="consent" type="checkbox" required aria-describedby="f-consent-error">
+          <label for="f-consent" data-i18n="label_consent">I agree.</label>
+          <p class="error" id="f-consent-error"></p>
+        </div>
+        <p><button type="button" class="link-button" data-open-privacy data-i18n="privacy_link">Read the privacy notice</button></p>
+
+        <div class="actions">
+          <button type="submit" class="primary" id="btn-start">
+            <span data-i18n="btn_start">Start</span>
+            <svg class="icon icon-flip" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- (b) Words -->
+    <section id="screen-word" class="screen" hidden aria-labelledby="word-text">
+      <div class="progress-wrap">
+        <p id="word-progress" class="progress-text"></p>
+        <progress id="word-progress-bar" max="10" value="0" aria-labelledby="word-progress"></progress>
+        <ol class="steps" id="word-steps" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ol>
+      </div>
+      <div class="word-card">
+        <p class="tag" id="word-category"></p>
+        <h2 class="word"><bdi id="word-text" lang="en" dir="ltr"></bdi></h2>
+        <p class="hint"><span data-i18n="label_meaning">Meaning:</span> <bdi id="word-hint" lang="en" dir="ltr"></bdi></p>
+      </div>
+
+      <form id="word-form" novalidate autocomplete="off">
+        <div class="field">
+          <label for="f-arabic" data-i18n="label_arabic">In Arabic letters</label>
+          <input id="f-arabic" name="arabic" type="text" dir="rtl" lang="ar" maxlength="200" aria-describedby="f-arabic-error">
+          <p class="error" id="f-arabic-error"></p>
+        </div>
+        <div class="field">
+          <label for="f-arabizi" data-i18n="label_arabizi">In Arabizi</label>
+          <input id="f-arabizi" name="arabizi" type="text" dir="ltr" lang="ar-Latn" maxlength="200" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="f-arabizi-error">
+          <p class="error" id="f-arabizi-error"></p>
+        </div>
+        <div class="field check">
+          <input id="f-kept" name="keptInEnglish" type="checkbox" aria-describedby="f-kept-help">
+          <label for="f-kept" data-i18n="label_keep_english">Keep this word in English</label>
+          <p class="help" id="f-kept-help" data-i18n="help_keep_english"></p>
+        </div>
+
+        <fieldset id="feminine" class="feminine" hidden>
+          <legend data-i18n="feminine_heading">Feminine form (optional)</legend>
+          <p class="help" id="feminine-note"></p>
+          <div class="field">
+            <label for="f-arabic-fem" data-i18n="label_arabic_feminine">Feminine, in Arabic letters</label>
+            <input id="f-arabic-fem" name="arabicFeminine" type="text" dir="rtl" lang="ar" maxlength="200" aria-describedby="f-arabic-fem-error">
+            <p class="error" id="f-arabic-fem-error"></p>
+          </div>
+          <div class="field">
+            <label for="f-arabizi-fem" data-i18n="label_arabizi_feminine">Feminine, in Arabizi</label>
+            <input id="f-arabizi-fem" name="arabiziFeminine" type="text" dir="ltr" lang="ar-Latn" maxlength="200" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="f-arabizi-fem-error">
+            <p class="error" id="f-arabizi-fem-error"></p>
+          </div>
+        </fieldset>
+
+        <p class="error-box" id="send-error" role="alert" hidden></p>
+
+        <div class="actions word-actions">
+          <button type="button" id="btn-back">
+            <svg class="icon icon-flip" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+            <span data-i18n="btn_back">Back</span>
+          </button>
+          <button type="submit" class="primary" id="btn-next">
+            <span id="btn-next-label" data-i18n="btn_next">Next</span>
+            <svg class="icon icon-flip" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <p class="help" id="identity-locked" hidden data-i18n="identity_locked"></p>
+        <div class="skip-row">
+          <button type="button" id="btn-skip" class="link-button" data-i18n="btn_skip">Skip this word</button>
+          <span id="skips-left" class="help"></span>
+        </div>
+      </form>
+    </section>
+
+    <!-- (c) Thank you -->
+    <section id="screen-done" class="screen" hidden aria-labelledby="done-heading">
+      <div class="burst" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <h2 id="done-heading" tabindex="-1" data-i18n="done_heading">Thank you!</h2>
+      <p id="done-body"></p>
+      <div class="code-box ticket">
+        <p class="code-label" data-i18n="deletion_code_label">Your deletion code</p>
+        <p class="code-row">
+          <code id="deletion-code" dir="ltr" lang="en"></code>
+          <button type="button" id="btn-copy" data-i18n="btn_copy">Copy</button>
+          <span id="copy-status" class="help" role="status"></span>
+        </p>
+        <p class="help" data-i18n="deletion_code_note">Keep this code if you ever want your entries deleted.</p>
+      </div>
+      <p id="pool-exhausted" hidden data-i18n="pool_exhausted"></p>
+      <div class="actions">
+        <button type="button" class="primary" id="btn-more" data-i18n="btn_more">Add 10 more words</button>
+      </div>
+      <p class="help" data-i18n="share_note"></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <button type="button" class="link-button" data-open-privacy data-i18n="privacy_heading">Privacy notice</button>
+    <span class="help" data-i18n="license_note">Code Apache-2.0. Words CC BY 4.0.</span>
+  </footer>
+
+  <dialog id="privacy-dialog" aria-labelledby="privacy-title">
+    <div class="dialog-head">
+      <h2 id="privacy-title" data-i18n="privacy_heading">Privacy notice</h2>
+      <button type="button" id="btn-privacy-close" data-i18n="btn_close">Close</button>
+    </div>
+    <div id="privacy-body" class="privacy-body"></div>
+  </dialog>
+
+</body>
+</html>

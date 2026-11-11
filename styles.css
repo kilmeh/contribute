@@ -1,0 +1,935 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Mobile-first. Logical properties only (inline/block, start/end) so RTL just works.
+   Look: "Ink and paper" (warm paper, ink, terracotta, eight-point stars).
+   Fonts are self-hosted (fonts/, SIL OFL); system fonts are the fallback. */
+
+/* ---------- Fonts ---------- */
+
+@font-face {
+  font-family: "Amiri";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/amiri-arabic-400.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFC;
+}
+
+@font-face {
+  font-family: "Amiri";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/amiri-arabic-700.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFC;
+}
+
+@font-face {
+  font-family: "Amiri";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/amiri-latin-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+
+@font-face {
+  font-family: "Amiri";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/amiri-latin-700.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+
+@font-face {
+  font-family: "Cairo";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/cairo-arabic-400.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFC;
+}
+
+@font-face {
+  font-family: "Cairo";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/cairo-arabic-700.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFC;
+}
+
+@font-face {
+  font-family: "Cairo";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/cairo-latin-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+
+@font-face {
+  font-family: "Cairo";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/cairo-latin-700.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+
+/* ---------- Tokens: Look 1 "Ink and paper" (default) ---------- */
+
+:root {
+  --bg: #f4ecd9;
+  --surface: #fbf7ec;
+  --text: #2a1d14;
+  --muted: #66574a;
+  --border: #cdbf9f;
+  --field-border: #8a7a62;
+  --accent: #a83e25;
+  --accent-bg: #a83e25;
+  --accent-text: #ffffff;
+  --accent-2: #e0a21b;
+  --error: #a3201a;
+  --error-bg: #fbe4df;
+  --banner-bg: #f1dc94;
+  --banner-text: #2a1d14;
+  --focus: #1a4fb8;
+  --radius: 6px;
+  --header-bg: #ebdfc1;
+  --header-text: #2a1d14;
+  --font: "Amiri", "Noto Naskh Arabic", "Geeza Pro", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-display: "Amiri", "Noto Naskh Arabic", "Geeza Pro", "Iowan Old Style", Georgia, serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-ui: var(--font);
+  --body-size: 1.15rem;
+  --body-leading: 1.6;
+  color-scheme: light;
+}
+
+/* Arabic UI: Amiri stays for the wordmark, headings and the answers; labels, buttons
+   and body text use Cairo, which stays clear at phone sizes. */
+html[lang="ar"] {
+  --font: "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
+  --font-ui: var(--font);
+  --body-size: 1.0625rem;
+  --body-leading: 1.85;
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+.brand {
+  font-family: var(--font-display);
+}
+
+legend,
+.tag,
+button,
+label {
+  font-family: var(--font-ui);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- Header and wordmark ---------- */
+
+.topbar {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.7rem;
+  padding-inline: 1rem;
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  border-block-end: 1px solid var(--border);
+}
+
+.topbar > * {
+  position: relative;
+  z-index: 1;
+}
+
+.topbar > .brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.brand-ar {
+  font-size: 2.1rem;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.brand-en {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  border: 2px solid currentcolor;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.lang-toggle button {
+  border: 0;
+  border-radius: 0;
+  min-block-size: 2.75rem;
+  min-inline-size: 3rem;
+  background: transparent;
+  color: inherit;
+  font-weight: 700;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.lang-toggle button[aria-pressed="true"] {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.banner {
+  margin: 0;
+  padding-block: 0.2rem;
+  padding-inline: 1rem;
+  background: var(--banner-bg);
+  color: var(--banner-text);
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", sans-serif;
+}
+
+/* ---------- Layout ---------- */
+
+main {
+  max-inline-size: 38rem;
+  margin-inline: auto;
+  padding-block: 1.25rem 2rem;
+  padding-inline: 1rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+  line-height: 1.25;
+  margin-block: 0.5rem 0.75rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin-block: 0.5rem;
+}
+
+.how {
+  margin-block-end: 0.5rem;
+}
+
+.how summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-block-size: 2.75rem;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  color: var(--accent);
+  list-style: none;
+}
+
+.how summary::-webkit-details-marker {
+  display: none;
+}
+
+.how summary::after {
+  content: "";
+  inline-size: 0.55rem;
+  block-size: 0.55rem;
+  border-inline-end: 2px solid currentcolor;
+  border-block-end: 2px solid currentcolor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.2s;
+}
+
+.how[open] summary::after {
+  transform: rotate(-135deg);
+}
+
+.how p {
+  margin-block: 0.25rem 0.5rem;
+}
+
+/* ---------- Form controls ---------- */
+
+.field {
+  margin-block: 1rem;
+}
+
+.field > label,
+legend {
+  display: block;
+  font-weight: 700;
+  margin-block-end: 0.3rem;
+}
+
+input[type="text"],
+input[type="email"],
+select {
+  display: block;
+  inline-size: 100%;
+  min-block-size: 2.9rem;
+  padding-block: 0.55rem;
+  padding-inline: 0.75rem;
+  border: 2px solid var(--field-border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 1.1rem; /* 16px+ stops iOS zoom on focus */
+}
+
+/* Answers: large enough to type and read comfortably. */
+input[lang="ar"] {
+  font-family: "Amiri", "Noto Naskh Arabic", "Geeza Pro", serif;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  min-block-size: 3.4rem;
+}
+
+input[lang="ar-Latn"] {
+  font-size: 1.3rem;
+}
+
+input[aria-invalid="true"],
+select[aria-invalid="true"] {
+  border-color: var(--error);
+}
+
+.field.check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.6rem;
+  align-items: start;
+}
+
+.field.check > label {
+  font-weight: 400;
+  margin: 0;
+  padding-block: 0.6rem;
+  min-block-size: 2.75rem;
+}
+
+.field.check > .help,
+.field.check > .error {
+  grid-column: 2;
+}
+
+input[type="checkbox"] {
+  inline-size: 1.6rem;
+  block-size: 1.6rem;
+  margin-block-start: 0.6rem;
+  margin-inline: 0.5rem;
+  accent-color: var(--accent);
+}
+
+input[type="checkbox"]:disabled + label {
+  color: var(--muted);
+}
+
+.help {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin-block: 0.3rem;
+}
+
+.error {
+  color: var(--error);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-block: 0.25rem 0;
+}
+
+.error:empty {
+  display: none;
+}
+
+.error-box {
+  color: var(--error);
+  background: var(--error-bg);
+  border-radius: var(--radius);
+  padding-block: 0.6rem;
+  padding-inline: 0.8rem;
+}
+
+button {
+  font-size: 1rem;
+  cursor: pointer;
+  min-block-size: 2.9rem;
+  min-inline-size: 2.75rem;
+  padding-block: 0.5rem;
+  padding-inline: 1.1rem;
+  border: 2px solid var(--field-border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+button.primary {
+  background: var(--accent-bg);
+  border-color: transparent;
+  color: var(--accent-text);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+button.link-button {
+  border: 0;
+  background: none;
+  padding-inline: 0;
+  min-block-size: 2.75rem;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-block-start: 1.25rem;
+}
+
+.actions .primary {
+  flex: 1;
+}
+
+.skip-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block-start: 0.5rem;
+}
+
+.icon {
+  inline-size: 1.2rem;
+  block-size: 1.2rem;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
+
+/* Directional icons point the other way in RTL. */
+[dir="rtl"] .icon-flip {
+  transform: scaleX(-1);
+}
+
+/* ---------- Progress: ten steps ---------- */
+
+.progress-wrap {
+  margin-block-end: 0.75rem;
+}
+
+.progress-text {
+  margin-block: 0 0.5rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-family: var(--font-ui);
+}
+
+/* The native bar stays for assistive tech; the ten steps are the visual. */
+progress {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.steps {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  max-inline-size: 2.2rem;
+  aspect-ratio: 1;
+  counter-increment: step;
+  transition: transform 0.25s, background-color 0.25s;
+}
+
+.tag {
+  display: inline-block;
+  margin-block: 0;
+  padding-block: 0.1rem;
+  padding-inline: 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.word-card {
+  position: relative;
+  margin-block: 0.5rem 1rem;
+  padding-block: 1.1rem;
+  padding-inline: 1.1rem;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.word {
+  font-size: 2.3rem;
+  line-height: 1.15;
+  margin-block: 0.5rem 0.25rem;
+}
+
+.hint {
+  margin-block: 0;
+  color: var(--muted);
+}
+
+.feminine {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding-block: 0.5rem 0.25rem;
+  padding-inline: 0.9rem;
+  margin-inline: 0;
+  min-inline-size: 0;
+}
+
+/* ---------- Thank-you: ticket and burst ---------- */
+
+.code-box {
+  position: relative;
+  margin-block: 1.25rem;
+  padding-block: 0.9rem;
+  padding-inline: 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.code-label {
+  margin: 0;
+  font-weight: 700;
+  font-family: var(--font-ui);
+}
+
+.code-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block: 0.5rem;
+  padding-block: 0.6rem;
+}
+
+.code-row code {
+  font-family: var(--mono);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  unicode-bidi: isolate;
+}
+
+#screen-done {
+  position: relative;
+}
+
+.burst {
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 1.2rem;
+  inline-size: 0;
+  block-size: 0;
+  pointer-events: none;
+}
+
+.burst i {
+  position: absolute;
+  inset-inline-start: -0.9rem;
+  inset-block-start: -0.9rem;
+  inline-size: 1.8rem;
+  block-size: 1.8rem;
+  opacity: 0;
+}
+
+.burst i:nth-child(1) { --dx: -7.5rem; --dy: -0.5rem; --rot: -80deg; --d: 0s; }
+.burst i:nth-child(2) { --dx: -5.5rem; --dy: 3rem; --rot: 120deg; --d: 0.08s; }
+.burst i:nth-child(3) { --dx: -3.2rem; --dy: -2.2rem; --rot: 200deg; --d: 0.14s; }
+.burst i:nth-child(4) { --dx: -1rem; --dy: 4.2rem; --rot: -140deg; --d: 0.04s; }
+.burst i:nth-child(5) { --dx: 1.5rem; --dy: -2.8rem; --rot: 90deg; --d: 0.12s; }
+.burst i:nth-child(6) { --dx: 4rem; --dy: 3.4rem; --rot: -200deg; --d: 0.06s; }
+.burst i:nth-child(7) { --dx: 5.8rem; --dy: -1.2rem; --rot: 160deg; --d: 0.16s; }
+.burst i:nth-child(8) { --dx: 7.5rem; --dy: 2.4rem; --rot: -60deg; --d: 0.1s; }
+
+@keyframes burst-out {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.2) rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(1.1) rotate(var(--rot));
+  }
+}
+
+/* ---------- Honeypot, footer, dialog ---------- */
+
+/* Honeypot: off-screen, not focusable from the keyboard (tabindex=-1). */
+.hp {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.footer {
+  max-inline-size: 38rem;
+  margin-inline: auto;
+  padding-block: 1rem 2rem;
+  padding-inline: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  border-block-start: 1px solid var(--border);
+}
+
+dialog {
+  inline-size: min(40rem, calc(100vw - 2rem));
+  max-block-size: calc(100vh - 2rem);
+  padding: 0;
+  border: 2px solid var(--field-border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.55);
+}
+
+.dialog-head {
+  position: sticky;
+  inset-block-start: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  background: var(--surface);
+  border-block-end: 1px solid var(--border);
+}
+
+.privacy-body {
+  padding-block: 0.5rem 1rem;
+  padding-inline: 1rem;
+}
+
+.privacy-body ul {
+  padding-inline-start: 1.25rem;
+}
+
+/* =====================================================================
+   Look 1: Ink and paper
+   Warm paper, deep ink, one terracotta accent, eight-point-star header.
+   ===================================================================== */
+
+.topbar {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64' fill='none' stroke='rgba(42,29,20,0.16)' stroke-width='1.2'%3E%3Cpolygon points='32,10 38.4,16.4 47.6,16.4 47.6,25.6 54,32 47.6,38.4 47.6,47.6 38.4,47.6 32,54 25.6,47.6 16.4,47.6 16.4,38.4 10,32 16.4,25.6 16.4,16.4 25.6,16.4'/%3E%3Cpolygon points='32,22 34.9,24.9 39.1,24.9 39.1,29.1 42,32 39.1,34.9 39.1,39.1 34.9,39.1 32,42 29.1,39.1 24.9,39.1 24.9,34.9 22,32 24.9,29.1 24.9,24.9 29.1,24.9'/%3E%3Cpath d='M0 0L8 8M64 0L56 8M0 64L8 56M64 64L56 56'/%3E%3C/svg%3E");
+  background-size: 64px 64px;
+  border-block-end: 3px double var(--text);
+  padding-block: 0.9rem;
+}
+
+.brand {
+  gap: 0.7rem;
+}
+
+.brand-ar {
+  position: relative;
+  font-size: 2.6rem;
+  color: var(--accent);
+  padding-block-end: 0.15rem;
+}
+
+.brand-ar::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0.1em;
+  inset-block-end: -0.05rem;
+  block-size: 0.4rem;
+  border-block-end: 3px solid var(--accent-2);
+  border-radius: 50%;
+}
+
+.brand-en {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+}
+
+.brand-en::before {
+  content: "";
+  inline-size: 0.8rem;
+  block-size: 0.8rem;
+  background: var(--accent-2);
+  clip-path: polygon(50% 0, 63.5% 17.5%, 85.4% 14.6%, 82.5% 36.5%, 100% 50%, 82.5% 63.5%, 85.4% 85.4%, 63.5% 82.5%, 50% 100%, 36.5% 82.5%, 14.6% 85.4%, 17.5% 63.5%, 0 50%, 17.5% 36.5%, 14.6% 14.6%, 36.5% 17.5%);
+}
+
+.lang-toggle {
+  border-color: var(--text);
+  background: var(--bg);
+}
+
+h1 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1::after {
+  content: "";
+  display: block;
+  inline-size: 4rem;
+  block-size: 0.9rem;
+  margin-block-start: 0.5rem;
+  background: var(--accent);
+  clip-path: polygon(0 45%, 38% 45%, 50% 0, 62% 45%, 100% 45%, 100% 55%, 62% 55%, 50% 100%, 38% 55%, 0 55%);
+}
+
+button.primary {
+  border-radius: 2px;
+  border: 2px solid var(--text);
+  box-shadow: 3px 3px 0 var(--text);
+  letter-spacing: 0.01em;
+}
+
+[dir="rtl"] button.primary {
+  box-shadow: -3px 3px 0 var(--text);
+}
+
+button.primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+input[type="text"],
+input[type="email"],
+select {
+  border-radius: 2px;
+  border-width: 0 0 2px;
+  border-color: var(--text);
+  background: transparent;
+  padding-inline: 0.15rem;
+}
+
+.steps li {
+  background: var(--border);
+  clip-path: polygon(50% 0, 63.5% 17.5%, 85.4% 14.6%, 82.5% 36.5%, 100% 50%, 82.5% 63.5%, 85.4% 85.4%, 63.5% 82.5%, 50% 100%, 36.5% 82.5%, 14.6% 85.4%, 17.5% 63.5%, 0 50%, 17.5% 36.5%, 14.6% 14.6%, 36.5% 17.5%);
+}
+
+.steps li.is-done {
+  background: var(--accent);
+}
+
+.steps li.is-current {
+  background: var(--text);
+  transform: scale(1.18) rotate(22.5deg);
+}
+
+.word-card {
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--text);
+  outline: 1px solid var(--text);
+  outline-offset: 4px;
+  border-radius: 2px;
+  margin-inline: 5px;
+  padding-block: 1.6rem 1.3rem;
+}
+
+.word-card::before,
+.word-card::after {
+  content: "";
+  position: absolute;
+  inset-block-start: -0.9rem;
+  inline-size: 1.7rem;
+  block-size: 1.7rem;
+  background: var(--accent);
+  clip-path: polygon(50% 0, 63.5% 17.5%, 85.4% 14.6%, 82.5% 36.5%, 100% 50%, 82.5% 63.5%, 85.4% 85.4%, 63.5% 82.5%, 50% 100%, 36.5% 82.5%, 14.6% 85.4%, 17.5% 63.5%, 0 50%, 17.5% 36.5%, 14.6% 14.6%, 36.5% 17.5%);
+}
+
+.word-card::before {
+  inset-inline-start: calc(50% - 0.85rem);
+}
+
+.word-card::after {
+  inset-block-start: calc(50% - 0.85rem);
+  inset-inline-start: auto;
+  inset-inline-end: -0.6rem;
+  background: var(--accent-2);
+  transform: scale(0.7);
+}
+
+.word {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.tag {
+  border: 0;
+  border-block-end: 2px solid var(--accent);
+  border-radius: 0;
+  padding-inline: 0.2rem;
+  font-style: italic;
+}
+
+.code-box {
+  border: 2px solid var(--text);
+  border-radius: 4px;
+  background: var(--surface);
+  padding-inline: 1.6rem;
+  background-image: repeating-linear-gradient(90deg, transparent 0 6px, rgba(42, 29, 20, 0.05) 6px 7px);
+}
+
+.code-box::before,
+.code-box::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inline-size: 1.2rem;
+  block-size: 1.2rem;
+  margin-block-start: -0.6rem;
+  border: 2px solid var(--text);
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+.code-box::before {
+  inset-inline-start: -0.7rem;
+}
+
+.code-box::after {
+  inset-inline-end: -0.7rem;
+}
+
+.code-row {
+  border-block: 2px dashed var(--muted);
+  margin-block: 0.6rem;
+}
+
+.code-row code {
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+
+.burst i {
+  background: var(--accent);
+  clip-path: polygon(50% 0, 63.5% 17.5%, 85.4% 14.6%, 82.5% 36.5%, 100% 50%, 82.5% 63.5%, 85.4% 85.4%, 63.5% 82.5%, 50% 100%, 36.5% 82.5%, 14.6% 85.4%, 17.5% 63.5%, 0 50%, 17.5% 36.5%, 14.6% 14.6%, 36.5% 17.5%);
+}
+
+.burst i:nth-child(even) {
+  background: var(--accent-2);
+}
+
+#screen-done:not([hidden]) .burst i {
+  animation: burst-out 1.8s ease-out var(--d) both;
+}
+
+#screen-done h2 {
+  text-align: center;
+  font-size: 2.6rem;
+  color: var(--accent);
+}
+
+/* ---------- Wider screens ---------- */
+
+@media (min-width: 40rem) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .word {
+    font-size: 3.6rem;
+  }
+
+  .topbar {
+    padding-inline: max(1rem, calc((100vw - 38rem) / 2 + 1rem));
+  }
+
+  main {
+    padding-block-start: 2.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
