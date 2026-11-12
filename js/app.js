@@ -18,16 +18,16 @@ import {
   validateEntry,
   validateIntro,
   validatePool,
-} from "./logic.js?v=2026-11-12d";
-import { arabicComplete, getLang, loadStrings, num, setLang, t } from "./i18n.js?v=2026-11-12d";
+} from "./logic.js?v=2026-11-12e";
+import { arabicComplete, getLang, loadStrings, num, setLang, t } from "./i18n.js?v=2026-11-12e";
 import {
   createMockSender,
   createNullSender,
   createSender,
   loadConfig,
   submitBatch,
-} from "./api.js?v=2026-11-12d";
-import { renderMarkdown } from "./markdown.js?v=2026-11-12d";
+} from "./api.js?v=2026-11-12e";
+import { renderMarkdown } from "./markdown.js?v=2026-11-12e";
 
 const STATE_KEY = "kilmeh.contribute.state";
 const $ = (id) => document.getElementById(id);
@@ -323,6 +323,15 @@ async function sendBatch() {
   }
 }
 
+// The logo returns to the sign-up screen; the current batch is kept and resumes on Start.
+function onHome(event) {
+  event.preventDefault();
+  if (sending) return;
+  state.screen = "intro";
+  persist();
+  renderIntro();
+}
+
 function onBack() {
   const where = goBack(state);
   persist();
@@ -433,6 +442,7 @@ function wire() {
   $("word-form").addEventListener("input", onWordInput);
   $("word-form").addEventListener("submit", onWordSubmit);
   $("btn-back").addEventListener("click", onBack);
+  $("brand-home").addEventListener("click", onHome);
   $("btn-skip").addEventListener("click", onSkip);
   $("btn-more").addEventListener("click", onMore);
   $("btn-copy").addEventListener("click", onCopy);
