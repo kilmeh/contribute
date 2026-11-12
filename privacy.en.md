@@ -2,6 +2,14 @@
 
 Kilmeh is an open benchmark that tests how well AI coding assistants handle Arabic. This page collects Arabic and Arabizi spellings of English words from native speakers. This notice explains what we collect and what we do with it.
 
+## Who is responsible
+
+The Kilmeh maintainers are responsible for this page and its data. Contact: akroushzaid@proton.me.
+
+## Age
+
+You must be 16 or older to contribute.
+
 ## What we collect
 
 - The country whose Arabic you speak (required; not where you live), or your own description if you choose Other. We derive a dialect group from it, for example Levantine for Jordan.
@@ -28,6 +36,16 @@ Kilmeh is an open benchmark that tests how well AI coding assistants handle Arab
 
 Your answers are stored in a Supabase database. The public page can only add new rows: it cannot read, change or delete anything. Only the Kilmeh maintainers can read the data.
 
+## Hosting
+
+- GitHub serves this page. Supabase stores your answers.
+- Both may log IP addresses and browser details for security, under their own privacy policies.
+- We do not store IP addresses in our data.
+
+## Where the data is held
+
+The database is in Frankfurt, Germany (EU).
+
 ## How long we keep it
 
 - Published words stay in the benchmark data while the project exists, unless you ask us to delete them.
@@ -35,7 +53,11 @@ Your answers are stored in a Supabase database. The public page can only add new
 
 ## Deleting your data
 
-After you send your words, the page shows a deletion code (for example K-ABCDE-23456). Keep it. To delete your entries, email the code to CONTACT_EMAIL_PLACEHOLDER and we will remove your entries and your contributor record. If you gave an email address, you can also write from that address instead of sending the code. Words that were already included in a published release cannot be removed from copies other people downloaded, but we will remove them from future releases.
+After you send your words, the page shows a deletion code (for example K-ABCDE-23456). Keep it. To delete your entries, email the code to akroushzaid@proton.me and we will remove your entries and your contributor record. If you gave an email address, you can also write from that address instead of sending the code. Words that were already included in a published release cannot be removed from copies other people downloaded, but we will remove them from future releases.
+
+## Your rights
+
+Email akroushzaid@proton.me to get a copy of your entries, correct them or delete them. We reply within 30 days.
 
 ## No tracking
 
@@ -46,6 +68,6 @@ After you send your words, the page shows a deletion code (for example K-ABCDE-2
 
 ## Questions
 
-Contact CONTACT_EMAIL_PLACEHOLDER.
+Contact akroushzaid@proton.me.
 
-Notice version 2026-11-11.
+Notice version 2026-11-12.

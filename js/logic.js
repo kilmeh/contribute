@@ -5,7 +5,7 @@
 export const BATCH_SIZE = 10;
 export const MAX_SKIPS = 3;
 export const MIN_MS_PER_WORD = 2000;
-export const CONSENT_TEXT_VERSION = "2026-11-11";
+export const CONSENT_TEXT_VERSION = "2026-11-12";
 // Version 3: country replaced dialect in the intro. Older saved states are discarded.
 export const STATE_VERSION = 3;
 
