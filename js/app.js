@@ -18,16 +18,16 @@ import {
   validateEntry,
   validateIntro,
   validatePool,
-} from "./logic.js";
-import { arabicComplete, getLang, loadStrings, num, setLang, t } from "./i18n.js";
+} from "./logic.js?v=2026-11-12a";
+import { arabicComplete, getLang, loadStrings, num, setLang, t } from "./i18n.js?v=2026-11-12a";
 import {
   createMockSender,
   createNullSender,
   createSender,
   loadConfig,
   submitBatch,
-} from "./api.js";
-import { renderMarkdown } from "./markdown.js";
+} from "./api.js?v=2026-11-12a";
+import { renderMarkdown } from "./markdown.js?v=2026-11-12a";
 
 const STATE_KEY = "kilmeh.contribute.state";
 const $ = (id) => document.getElementById(id);

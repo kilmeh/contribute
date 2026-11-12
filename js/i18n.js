@@ -2,7 +2,7 @@
 // Bilingual UI strings. Arabic strings are written by a native speaker (the board);
 // until a value is filled in, the English string is shown in its place.
 
-import { format, glueLicense } from "./logic.js";
+import { format, glueLicense } from "./logic.js?v=2026-11-12a";
 
 export const AR_PLACEHOLDER = "TODO: board Arabic";
 
