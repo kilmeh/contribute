@@ -732,7 +732,7 @@ dialog::backdrop {
   font-family: var(--font-display);
 }
 
-.brand-en::before {
+.brand-en::after {
   content: "";
   inline-size: 0.8rem;
   block-size: 0.8rem;
