@@ -11,7 +11,7 @@ import {
   markContributorSaved,
   regenerateIdentity,
   validateIntro,
-} from "./logic.js?v=2026-11-12b";
+} from "./logic.js?v=2026-11-12d";
 
 export const MOCK_KEY = "kilmeh.contribute.mock-submissions";
 const TIMEOUT_MS = 15000;

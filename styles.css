@@ -704,13 +704,18 @@ dialog::backdrop {
   padding-block: 0.9rem;
 }
 
-.brand {
-  gap: 0.7rem;
+.topbar > .brand {
+  /* Arabic word: 2.6rem, never below 2.1rem. KILMEH: capital height matches the Arabic letter
+     bodies (not the tall ك and ل strokes). Both scale together only when the row cannot fit. */
+  --avail: calc(min(100vw - 2rem, 38rem) - 8.4rem);
+  --brand-fs: clamp(2.1rem, calc(var(--avail) / 6), 2.6rem);
+  --en-fs: min(calc(var(--brand-fs) * 0.944), calc((var(--avail) - 1.6 * var(--brand-fs)) / 4.9));
+  gap: calc(var(--brand-fs) * 0.23);
 }
 
 .brand-ar {
   position: relative;
-  font-size: 2.6rem;
+  font-size: var(--brand-fs);
   color: var(--accent);
   padding-block-end: 0.15rem;
 }
@@ -728,14 +733,20 @@ dialog::backdrop {
 .brand-en {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25em;
+  font-size: var(--en-fs);
+  letter-spacing: 0.04em;
+  line-height: 0.5;
   font-family: var(--font-display);
 }
 
 .brand-en::after {
   content: "";
-  inline-size: 0.8rem;
-  block-size: 0.8rem;
+  inline-size: 0.5em;
+  block-size: 0.5em;
+  position: relative;
+  inset-block-start: -0.09em;
+  margin-inline-start: -0.04em;
   background: var(--accent-2);
   clip-path: polygon(50.0% 0.0%, 60.8% 27.6%, 89.1% 18.8%, 74.3% 44.5%, 98.7% 61.1%, 69.5% 65.5%, 71.7% 95.0%, 50.0% 74.9%, 28.3% 95.0%, 30.5% 65.5%, 1.3% 61.1%, 25.7% 44.5%, 10.9% 18.8%, 39.2% 27.6%);
 }
@@ -908,6 +919,16 @@ select {
 }
 
 /* ---------- Wider screens ---------- */
+
+@media (max-width: 26rem) {
+  .brand-en {
+    letter-spacing: 0;
+  }
+
+  .brand-en::after {
+    margin-inline-start: 0.03em;
+  }
+}
 
 @media (min-width: 40rem) {
   h1 {
